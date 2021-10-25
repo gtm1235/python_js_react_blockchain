@@ -13,9 +13,9 @@ pip3 install -r requirements.tx
 
 **Add private subscribe and publish keys from PubNub**
 
-```
 add .env file to the backend folder with the following format:
 
+```
 subscribe_key = <SUBSCRIBE_KEY>
 publish_key = <PUBLISH_KEY>
 ```
