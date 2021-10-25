@@ -10,6 +10,15 @@ source blockchain-env/scripts/activate
 pip3 install -r requirements.txt
 '''
 
+**Add private subscribe and publish keys from PubNub**
+
+'''
+add .env file to the backend folder with the following format:
+
+pnconfig.subscribe_key = <SUBSCRIBE_KEY>
+pnconfig.publish_key = <PUBLISH_KEY>
+'''
+
 **Run the tests**
 
 Make sure to activate the virtual environment
