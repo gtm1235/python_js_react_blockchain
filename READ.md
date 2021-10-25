@@ -11,7 +11,7 @@ pip3 install -r requirements.tx
 
 ```
 
-**Add private subscribe and publish keys from PubNub**
+**Add private subscribe and publish keys from PubNub making use of [python-dotenv]**
 
 add .env file to the backend folder with the following format:
 
