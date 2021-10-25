@@ -62,7 +62,7 @@ def main():
     print(f'\nsignature: {signature}')
 
     should_be_valid = Wallet.verify(wallet.public_key, data, signature)
-    print(f'\nshould_be_valid: {should_be_valid}')
+    print(f'\nShould_be_valid: {should_be_valid}')
 
     should_be_invalid = Wallet.verify(Wallet().public_key, data, signature)
     print(f'\nShould be invalid: {should_be_invalid}')
