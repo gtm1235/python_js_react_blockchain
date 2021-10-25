@@ -15,7 +15,7 @@ load_dotenv()
 pnconfig = PNConfiguration()
 pnconfig.subscribe_key = str(os.getenv('subscribe_key'))
 pnconfig.publish_key = str(os.getenv('publish_key'))
-#str(os.getenv('pnconfig.publish_key'))
+# str(os.getenv('pnconfig.publish_key'))
 pubnub = PubNub(pnconfig)
 
 CHANNELS = {
@@ -67,6 +67,7 @@ class PubSub():
         Broadcast a block object to all nodes
         """
         self.publish(CHANNELS['BLOCK'], block.to_json())
+
 
 def main():
     pubsub = PubSub()
