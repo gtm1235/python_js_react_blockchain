@@ -13,8 +13,9 @@ load_dotenv()
 
 
 pnconfig = PNConfiguration()
-str(os.getenv('pnconfig.subscribe_key'))
-str(os.getenv('pnconfig.publish_key'))
+pnconfig.subscribe_key = str(os.getenv('subscribe_key'))
+pnconfig.publish_key = str(os.getenv('publish_key'))
+#str(os.getenv('pnconfig.publish_key'))
 pubnub = PubNub(pnconfig)
 
 CHANNELS = {
