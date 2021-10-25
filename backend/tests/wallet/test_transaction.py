@@ -1,3 +1,5 @@
+import pytest
+
 from backend.wallet.transaction import Transaction
 from backend.wallet.wallet import Wallet
 
@@ -20,3 +22,7 @@ def test_transaction():
         transaction.output,
         transaction.input['signature']
     )
+
+def test_transaction_exceeds_balance():
+    with pytest.raises(Exception, match='Amount exceeds balance'):
+        Transaction(Wallet(), 'recipient', 9001)

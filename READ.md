@@ -8,7 +8,6 @@ source blockchain-env/scripts/activate
 
 ```
 pip3 install -r requirements.tx
-
 ```
 
 **Add private subscribe and publish keys from PubNub making use of python-dotenv package**
