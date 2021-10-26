@@ -3,12 +3,14 @@ import uuid
 
 from backend.wallet.wallet import Wallet
 
+
 class Transaction:
     """
     Document of an exchange in currency from a sender to one 
     or more recipients
 
     """
+
     def __init__(self, sender_wallet, recipient, amount):
         self.id = str(uuid.uuid4())[0:8]
         self.output = self.create_output(
@@ -46,9 +48,28 @@ class Transaction:
             'signature': sender_wallet.sign(output)
         }
 
-def  main():
+    def update(self, sender_wallet, recipient, amount):
+        """
+        Update the transaction with an existing or new recipient.
+        """
+        if amount > self.output[sender_wallet.address]:
+            raise Exception('Amount exceeds balance')
+
+        if recipient in self.output:
+            self.output[recipient] = self.output[recipient] + amount
+        else:
+            self.output[recipient] = amount
+
+        self.output[sender_wallet.address] = \
+            self.output[sender_wallet.address] - amount
+
+        self.input = self.create_input(sender_wallet, self.output)
+
+
+def main():
     transaction = Transaction(Wallet(), 'recipient', 15)
     print(f'transaction.__dict__: {transaction.__dict__}')
+
 
 if __name__ == '__main__':
     main()

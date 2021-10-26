@@ -4,6 +4,7 @@ import uuid
 import cryptography
 
 from backend.config import STARTING_BALANCE
+
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives import hashes
@@ -60,6 +61,8 @@ def main():
     data = {'foo': 'bar'}
     signature = wallet.sign(data)
     print(f'\nsignature: {signature}')
+
+    print(f'{STARTING_BALANCE}')
 
     should_be_valid = Wallet.verify(wallet.public_key, data, signature)
     print(f'\nShould_be_valid: {should_be_valid}')
