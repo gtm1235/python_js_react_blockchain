@@ -22,5 +22,5 @@ instance/
 .webassets-cache
 .vscode
 .vscode/
-blockchain-env/
+
 .env
