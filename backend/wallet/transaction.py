@@ -82,6 +82,10 @@ class Transaction:
             transaction.input['signature']
         ):
             raise Exception('Invalid signature')
+    
+    @staticmethod
+    def to_json(transaction):
+        return transaction.__dict__
 
 
 def main():
