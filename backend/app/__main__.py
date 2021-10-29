@@ -6,14 +6,17 @@ from flask import Flask, jsonify, request
 
 
 from backend.blockchain.blockchain import Blockchain
+from backend.wallet import transaction_pool
 from backend.wallet.wallet import Wallet
 from backend.wallet.transaction import Transaction
+from backend.wallet.transaction_pool import TransactionPool
 from backend.pubsub import PubSub
 
 app = Flask(__name__)
 blockchain = Blockchain()
 wallet = Wallet()
-pubsub = PubSub(blockchain)
+transaction_pool = TransactionPool()
+pubsub = PubSub(blockchain, transaction_pool)
 
 
 @app.route('/')
@@ -28,9 +31,8 @@ def route_blockchain():
 
 @app.route('/blockchain/mine')
 def route_blockchain_mine():
-    transaction_data = 'stubbed_transaction_data'
 
-    blockchain.add_block(transaction_data)
+    blockchain.add_block(transaction_pool.transaction_data())
 
     block = blockchain.chain[-1]
     pubsub.broadcast_block(block)
@@ -42,13 +44,22 @@ def route_blockchain_mine():
 def route_wallet_transact():
     # { 'recipient': 'foo', 'amount': 15}
     transaction_data = request.get_json()
-    transaction = Transaction(
-        wallet,
-        transaction_data['recipient'],
-        transaction_data['amount']
-    )
+    transaction = transaction_pool.existing_transaction(wallet.address)
 
-    print(f'Transaction.to_json(transaction), {Transaction.to_json(transaction)}')
+    if transaction:
+        transaction.update(wallet,
+                           transaction_data['recipient'],
+                           transaction_data['amount'])
+
+    else:
+        transaction = Transaction(
+            wallet,
+            transaction_data['recipient'],
+            transaction_data['amount']
+        )
+
+    pubsub.broadcast_transaction(transaction)
+
     return jsonify(Transaction.to_json(transaction))
 
 

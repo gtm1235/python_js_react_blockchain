@@ -1,3 +1,6 @@
+from backend.wallet.transaction import Transaction
+
+
 class TransactionPool:
     def __init__(self):
         self.transaction_map = {}
@@ -8,4 +11,22 @@ class TransactionPool:
         """
         self.transaction_map[transaction.id] = transaction
 
-        
+    def existing_transaction(self, address):
+        """
+        Find a transaction generated bu the address in the transaction pool
+        """
+        for transaction in self.transaction_map.values():
+            if transaction.input['address'] == address:
+                return transaction
+            else:
+                return None
+
+    def transaction_data(self):
+        """
+        Return the transactions of the transaction pool represented 
+        in their json serialized form
+        """
+        return list(map(
+                lambda transaction: Transaction.to_json(
+                    transaction), self.transaction_map.values())
+        )
