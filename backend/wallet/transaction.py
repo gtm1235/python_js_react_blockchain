@@ -2,6 +2,7 @@ import time
 import uuid
 
 from backend.wallet.wallet import Wallet
+from backend.config import MINING_REWARD, MINING_REWARD_INPUT
 
 
 class Transaction:
@@ -92,6 +93,11 @@ class Transaction:
         Validate a transaction.
         Raise an exception for invalid transactions.
         """
+        if transaction.input == MINING_REWARD_INPUT:
+            if list(transaction.output.values()) != [MINING_REWARD]:
+                raise Exception('Invalid Mining Reward')
+            return
+
         output_total = sum(transaction.output.values())
 
         if transaction.input['amount'] != output_total:
@@ -108,6 +114,15 @@ class Transaction:
     def to_json(transaction):
         return transaction.__dict__
 
+    @staticmethod
+    def reward_transaction(miner_wallet):
+        """
+        Generate a reward transaction that awards the miner
+        """
+        output = {}
+        output[miner_wallet.address] = MINING_REWARD
+
+        return Transaction(input=MINING_REWARD_INPUT, output=output)
 
 def main():
     transaction = Transaction(Wallet(), 'recipient', 15)
