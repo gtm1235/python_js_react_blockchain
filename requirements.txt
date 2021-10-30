@@ -4,3 +4,4 @@ pubnub=4.1.6
 requests=2.22.0
 python-dotenv==0.19.1
 cryptography==35.0.0
+Flask-Cors==3.0.8
