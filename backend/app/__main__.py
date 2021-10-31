@@ -14,7 +14,7 @@ from backend.wallet.transaction_pool import TransactionPool
 from backend.pubsub import PubSub
 
 app = Flask(__name__)
-CORS(app, resources={ r'/*': { 'origins': 'http://localhost:3000' } })
+CORS(app, resources={r'/*': {'origins': 'http://localhost:3000'}})
 blockchain = Blockchain()
 wallet = Wallet(blockchain)
 transaction_pool = TransactionPool()
@@ -34,7 +34,8 @@ def route_blockchain():
 @app.route('/blockchain/mine')
 def route_blockchain_mine():
     transaction_data = transaction_pool.transaction_data()
-    transaction_data.append(Transaction.to_json(Transaction.reward_transaction(wallet)))
+    transaction_data.append(Transaction.to_json(
+        Transaction.reward_transaction(wallet)))
     blockchain.add_block(transaction_data)
     block = blockchain.chain[-1]
     pubsub.broadcast_block(block)
@@ -65,6 +66,7 @@ def route_wallet_transact():
 
     return jsonify(Transaction.to_json(transaction))
 
+
 @app.route('/wallet/info')
 def route_wallet_info():
     return jsonify({'address': wallet.address, 'balance': wallet.balance})
@@ -85,4 +87,19 @@ if os.environ.get('PEER') == 'True':
     except Exception as e:
         print(f'\n -- Error synchronizing: {e}')
 
+if os.environ.get('SEED_DATA') == 'True':
+    for i in range(10):
+        blockchain.add_block(
+            [
+                Transaction.to_json(
+                    Transaction(Wallet(), Wallet().address,
+                                random.randint(2, 50))
+                ),
+                Transaction.to_json(
+                    Transaction(Wallet(), Wallet().address,
+                                random.randint(2, 50))
+                )
+            ]
+        )
+print(os.environ.get('SEED_DATA'))
 app.run(port=PORT)

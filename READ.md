@@ -45,5 +45,13 @@ export PEER=True && python -m backend.app
 
 In the frontend directory:
 ```
-npm reun start
+npm run start
+```
+
+**Seed the backend with data**
+
+Make sure to activate the virtual environment
+
+```
+export SEED_DATA=True && python -u -m backend.app
 ```
